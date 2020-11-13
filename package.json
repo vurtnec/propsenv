@@ -1,0 +1,25 @@
+{
+  "name": "propsenv",
+  "version": "1.0.0",
+  "description": "Loads multiple environment variables from properties file",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "env",
+    ".env",
+    "environment",
+    "variables",
+    "config",
+    "settings",
+    "properties"
+  ],
+  "dependencies": {},
+  "engines": {
+    "node": ">=8"
+  },
+  "author": "Zachary",
+  "license": "ISC",
+  "readmeFilename": "README.md"
+}
