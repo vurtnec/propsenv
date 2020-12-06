@@ -1,6 +1,6 @@
 {
   "name": "propsenv",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Loads multiple environment variables from properties file",
   "main": "src/index.js",
   "scripts": {

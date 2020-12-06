@@ -1,3 +1,6 @@
+## Overview
+This is base on the https://www.npmjs.com/package/dotenv and support multiple environments file.
+
 ## Install
 
 ```bash
@@ -32,7 +35,7 @@ USER=root
 PASS=pass
 ```
 
-You can also create multiple `env_<env>.properties` file in the the directory.
+You can also create multiple `env_<env>.properties` file in the directory.
 
 ```
 # <root>/env
