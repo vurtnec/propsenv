@@ -33,6 +33,7 @@ Create a `env_<env>.properties` file in the root/env/ directory of your project.
 HOST=localhost.local
 USER=root
 PASS=pass
+ARRAY=1,item,3, true
 ```
 
 You can also create multiple `env_<env>.properties` file in the directory.

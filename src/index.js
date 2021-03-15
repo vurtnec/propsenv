@@ -51,7 +51,7 @@ const parse = (src, options) => {
 // Populates process.env from .env file
 module.exports = (options = {}) => {
 
-    const {debug = false, filePath = './env/', encoding = 'utf8', profile} = options
+    const {debug = false, filePath = './env/', encoding = 'utf8', profile, arrayDelimiter = ','} = options
 
     const currentProfile = profile || (process.env.NODE_ENV ? process.env.NODE_ENV : 'local')
 
@@ -62,22 +62,38 @@ module.exports = (options = {}) => {
     let file = `env_${currentProfile}.properties`
 
     try {
+        let result = {}
         // specifying an encoding returns a string instead of a buffer
-        const parsed = parse(fs.readFileSync(`${filePath}${file}`, {encoding}), {debug})
-
-        Object.keys(parsed).forEach(function (key) {
+        const parsedEnvFile = parse(fs.readFileSync(`${filePath}${file}`, {encoding}), {debug})
+        Object.keys(parsedEnvFile).forEach((key) => {
+            log(`parsing current key: ${key}`)
+            let environmentValue = parsedEnvFile[key]
+            result[key] = environmentValue
             if (!process.env.hasOwnProperty(key)) {
-                if (isNumber(parsed[key])) {
-                    parsed[key] = Number(parsed[key])
-                } else if (isBoolean(parsed[key])) {
-                    parsed[key] = JSON.parse(parsed[key])
+                if (isNumber(environmentValue)) {
+                    result[key] = Number(environmentValue)
+                } else if (isBoolean(environmentValue)) {
+                    result[key] = JSON.parse(environmentValue)
+                } else if (isArray(environmentValue, arrayDelimiter)) {
+                    const splitedArray = environmentValue.split(arrayDelimiter)
+                    const parsedArray = splitedArray.filter((item) => !isEmpty(item.trim())).map((item) => {
+                        let parsedItem = item.trim()
+                        if(isNumber(parsedItem)) {
+                            return Number(parsedItem)
+                        }else if(isBoolean(parsedItem)) {
+                            return JSON.parse(parsedItem)
+                        }else {
+                            return parsedItem
+                        }
+                    })
+                    result[key] = parsedArray
                 }
-                process.env[key] = parsed[key]
+                process.env[key] = result[key]
             } else if (debug) {
                 log(`"${key}" is already defined in \`process.env\` and will not be overwritten`)
             }
         })
-        return {parsed}
+        return result
     } catch (e) {
         return {error: e}
     }
@@ -89,4 +105,12 @@ const isNumber = (str) => {
 
 const isBoolean = (str) => {
     return str.toLowerCase() === 'true' || str.toLowerCase() === 'false'
+}
+
+const isEmpty = (str) => {
+    return str === undefined || str === null || str === ''
+}
+
+const isArray = (str, delimiter) => {
+    return str.indexOf(delimiter) !== -1 ? true : false
 }

@@ -1,5 +1,6 @@
 const propsConfig = require('../src/index')
-propsConfig()
+const results = propsConfig()
 
 
 console.log(process.env.HOST)
+console.log('results:', results)
