@@ -66,7 +66,7 @@ module.exports = (options = {}) => {
         // specifying an encoding returns a string instead of a buffer
         const parsedEnvFile = parse(fs.readFileSync(`${filePath}${file}`, {encoding}), {debug})
         Object.keys(parsedEnvFile).forEach((key) => {
-            log(`parsing current key: ${key}`)
+            // log(`parsing current key: ${key}`)
             let environmentValue = parsedEnvFile[key]
             result[key] = environmentValue
             if (!process.env.hasOwnProperty(key)) {
